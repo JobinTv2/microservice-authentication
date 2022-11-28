@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Role } from '../dto/user-role-dto';
 
 @Entity()
 export class User {
@@ -12,4 +13,6 @@ export class User {
   email: string;
   @Column()
   password: string;
+  @Column()
+  role: string;
 }
