@@ -38,6 +38,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return id;
+    return this.userService.findById(Number(id));
   }
 }

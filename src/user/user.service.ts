@@ -23,4 +23,14 @@ export class UserService {
     const result = await this.userRepository.findOneBy({ email });
     return result;
   }
+
+  async findById(id: number) {
+    const result = await this.userRepository.findOneBy({ id });
+    if (!result)
+      return {
+        status: 'Error',
+        message: 'No user found for the corresponding id',
+      };
+    return result;
+  }
 }
