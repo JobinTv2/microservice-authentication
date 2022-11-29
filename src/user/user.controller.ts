@@ -10,6 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
 import { LocalAuthGuard } from 'src/auth/auth-guard/local-auth-gaurd';
+import { RolesGuard } from 'src/auth/auth-guard/roles-guard';
 import { AuthService } from 'src/auth/auth.service';
 import { HasRoles } from 'src/auth/has-roles.decorator';
 import { CreateUserDto } from './dto/create-user-dto';
@@ -33,8 +34,8 @@ export class UserController {
     return this.authService.login(loginUserDto);
   }
 
-  // @HasRoles(Role.Admin)
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return id;

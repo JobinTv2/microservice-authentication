@@ -17,13 +17,13 @@ export class AuthService {
   }
 
   async login(user: any) {
-    console.log(user);
+    const userData = await this.userService.findOneByEmail(user.email);
     const payload = {
-      email: user.email,
-      id: user.userId,
-      role: user.roles,
-      firstname: user.firstname,
-      lastname: user.lastname,
+      email: userData.email,
+      id: userData.id,
+      role: userData.role,
+      firstname: userData.firstname,
+      lastname: userData.lastname,
     };
     return {
       token: this.jwtService.sign(payload),
