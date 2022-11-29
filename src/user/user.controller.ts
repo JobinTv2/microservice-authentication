@@ -1,7 +1,19 @@
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+  Param,
+  Get,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
+import { LocalAuthGuard } from 'src/auth/auth-guard/local-auth-gaurd';
 import { AuthService } from 'src/auth/auth.service';
+import { HasRoles } from 'src/auth/has-roles.decorator';
 import { CreateUserDto } from './dto/create-user-dto';
+import { Role } from './dto/user-role-dto';
 import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
@@ -15,12 +27,16 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Body() loginUserDto: { email: string; password: string }) {
-    console.log(loginUserDto);
     return this.authService.login(loginUserDto);
   }
 
-  // @UseGuards(AuthGuard('local'))
-  // @Get
+  // @HasRoles(Role.Admin)
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return id;
+  }
 }
